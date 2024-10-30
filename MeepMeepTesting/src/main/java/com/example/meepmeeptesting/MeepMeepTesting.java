@@ -15,9 +15,14 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(0, -63,Math.toRadians(90)))
                         .forward(23)
+                        //score specimen w claw
+                        .lineToLinearHeading(new Pose2d(36, -40, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(36, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(46, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(46, -50, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(61, -50, Math.toRadians(180)))
 
-                        .lineToLinearHeading(new Pose2d(-48, -40, Math.toRadians(90)))
-                        .lineToLinearHeading(new Pose2d(-48, -46, Math.toRadians(45)))
+
                         .build());
 
 

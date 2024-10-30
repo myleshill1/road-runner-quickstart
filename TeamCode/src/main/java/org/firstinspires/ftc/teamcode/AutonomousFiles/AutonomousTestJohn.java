@@ -24,6 +24,20 @@ public class AutonomousTestJohn extends LinearOpMode {
                 .strafeTo(new Vector2d(0,-40))
                 .strafeToLinearHeading(new Vector2d(-48, -40), Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
+
+                .turn(Math.toRadians(73))
+                .turn(Math.toRadians(-73))
+
+                .turn(Math.toRadians(85.5))
+
+                .splineToLinearHeading(new Pose2d(-26, -10, Math.toRadians(0)), Math.toRadians(25))
+
+
+
+
+
+
+
 // and then at the end
                 .build();
 
