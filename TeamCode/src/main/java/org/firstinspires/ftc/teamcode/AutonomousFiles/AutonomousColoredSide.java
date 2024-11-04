@@ -23,7 +23,8 @@ public class AutonomousColoredSide extends LinearOpMode {
 // for example
                 .strafeToLinearHeading(new Vector2d(0,-40), Math.toRadians(90))
                 //score specimen w claw
-                .strafeToLinearHeading(new Vector2d(36, -40), Math.toRadians(180))
+                //.strafeToLinearHeading(new Vector2d(36, -40), Math.toRadians(180))
+                .setTangent(180)
                 .strafeToLinearHeading(new Vector2d(36, -10), Math.toRadians(180))
                 .strafeToLinearHeading(new Vector2d(46, -10), Math.toRadians(180))
                 .strafeToLinearHeading(new Vector2d(46, -50), Math.toRadians(180))
