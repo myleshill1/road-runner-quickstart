@@ -19,11 +19,56 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 @Autonomous(name = "autotest1", group = "Autonomous")
 public class AutonomousTest extends LinearOpMode {
-    @Override
+    public class Lift {
+        private DcMotorEx lift1;
+        private DcMotorEx lift2;
+
+        public Lift(HardwareMap hardwareMap) {
+            lift1 = hardwareMap.get(DcMotorEx.class, "scoringslides");
+            lift1.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            lift1.setDirection(DcMotorSimple.Direction.FORWARD);
+            lift2 = hardwareMap.get(DcMotorEx.class, "slidesscoring2");
+            lift2.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            lift2.setDirection(DcMotorSimple.Direction.FORWARD);
+        }
+
+        public class LiftUp implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    lift1.setPower(1);
+                    lift2.setPower(1);
+                    initialized = true;
+                }
+
+                double pos1 = lift1.getCurrentPosition();
+                double pos2 = lift2.getCurrentPosition();
+                packet.put("lift1Pos", pos1);
+                packet.put("lift2Pos", pos2);
+                if (pos1 < 1300.0 && pos2 < 1300.0) {
+                    return true;
+                } else {
+                    lift1.setPower(0);
+                    lift2.setPower(0);
+                    return false;
+                }
+            }
+        }
+
+        public Action liftUp() {
+            return new LiftUp();
+        }
+    }
+        @Override
     public void runOpMode() {
                 waitForStart();
         Pose2d initialPose = new Pose2d(0, -63, Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+        Lift lift = new Lift(hardwareMap);
+
+        Action liftAction1 = lift.liftUp();
         Action traj = drive.actionBuilder(drive.pose)
 // then your movements
 // for example
@@ -35,7 +80,7 @@ public class AutonomousTest extends LinearOpMode {
 
 // finally, after waitForStart, run it:
         Actions.runBlocking(traj);
-
+        Actions.runBlocking(liftAction1);
 
 
     }
