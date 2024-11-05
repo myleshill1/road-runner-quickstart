@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Config
-@Autonomous(name = "autotestjohn", group = "Autonomous")
+@Autonomous(name = "autotestfaryar", group = "Autonomous")
 public class AutonomousTestFaryar extends LinearOpMode {
 
 
