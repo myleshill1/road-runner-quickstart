@@ -36,21 +36,17 @@ public class AutonomousTestFaryar extends LinearOpMode {
 // then your movements
 // for example
 
-
                 .strafeTo(new Vector2d(0,-40))
                 .strafeToLinearHeading(new Vector2d(-48, -40), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
+                //.strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
+                //.waitSeconds(1)
 
-                .waitSeconds(1)
-                .turnTo(Math.toRadians(120))
-                .turnTo(Math.toRadians(45))
-                .turnTo(Math.toRadians(133))
-                .turnTo(Math.toRadians(45))
-                .waitSeconds(1)
-                .turn(Math.toRadians(85.5))
+                .strafeToLinearHeading(new Vector2d(-52, -50), Math.toRadians(225))
+                .strafeToLinearHeading(new Vector2d(-58.5, -40), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(-52, -50), Math.toRadians(225))
+                .strafeToLinearHeading(new Vector2d(-58.5, -40), Math.toRadians(120))
+                .strafeToLinearHeading(new Vector2d(-52, -50), Math.toRadians(225))
                 .splineToLinearHeading(new Pose2d(-26, -10, Math.toRadians(0)), Math.toRadians(25))
-
-
 
 
 

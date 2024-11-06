@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -165,12 +166,12 @@ public class AutonomousTest extends LinearOpMode {
         Pivot pivot = new Pivot(hardwareMap);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         //put initialization here
-        Actions.runBlocking(lift.liftDown());
+        //Actions.runBlocking(lift.liftDown());
         //init ends
 
         //
         Action liftAction1 = lift.liftUp();
-        Action pivotAction1 = pivot.pivotUp();
+        Action specimenPivotUp = pivot.pivotUp();
         Action trajectory = drive.actionBuilder(drive.pose)
 // then your movements
 // for example
@@ -181,9 +182,20 @@ public class AutonomousTest extends LinearOpMode {
                 .build();
 
 // finally, after waitForStart, run it:
-        Actions.runBlocking(trajectory);
-        Actions.runBlocking(pivotAction1);
-        Actions.runBlocking(liftAction1);
+        Actions.runBlocking(trajectory); //move forward to score specimen
+        Actions.runBlocking(specimenPivotUp); //specimen pivot
+        Actions.runBlocking(liftAction1); //specimen lift
+        Actions.runBlocking(); //pivot down to score specimen
+        Actions.runBlocking(); //open claw
+        Actions.runBlocking(); //pivot down to pick up sample
+        Actions.runBlocking(); //slides extend/close claw on sample
+        Actions.runBlocking(new ParallelAction(
+        //pivot and drive to bucket section
+
+        ));
+        Actions.runBlocking(); //high bucket lift
+        Actions.runBlocking(); //claw open
+
 
 
 
