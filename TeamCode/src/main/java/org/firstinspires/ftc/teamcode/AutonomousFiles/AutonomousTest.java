@@ -24,6 +24,38 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 @Autonomous(name = "autotest1", group = "Autonomous")
 public class AutonomousTest extends LinearOpMode {
+
+    public class Claw {
+        private Servo claw;
+
+        public Claw(HardwareMap hardwareMap) {
+            claw = hardwareMap.get(Servo.class, "Claw");
+        }
+
+        public class CloseClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                claw.setPosition(-0.5);
+                return false;
+            }
+        }
+        public Action closeClaw() {
+            return new CloseClaw();
+        }
+
+        public class OpenClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                claw.setPosition(1.0);
+                return false;
+            }
+        }
+        public Action openClaw() {
+            return new OpenClaw();
+        }
+    }
+
+
     public class Lift {
         private DcMotorEx lift1;
         private DcMotorEx lift2;
@@ -56,7 +88,7 @@ public class AutonomousTest extends LinearOpMode {
                 double pos2 = lift2.getCurrentPosition();
                 packet.put("lift1Pos", pos1);
                 packet.put("lift2Pos", pos2);
-                if (pos1 < 2000.0 && pos2 < 2000.0) {
+                if (pos1 < 1450.0 && pos2 < 1450.0) {
                     telemetry.addData("lift1pos", pos1);
                     telemetry.addData("lift2pos", pos2);
                     telemetry.update();
@@ -87,7 +119,7 @@ public class AutonomousTest extends LinearOpMode {
                 double pos2 = lift2.getCurrentPosition();
                 packet.put("lift1Pos", pos1);
                 packet.put("lift2Pos", pos2);
-                if (pos1 > 0.0 && pos2 < 0.0) {
+                if (pos1 > 0.0 && pos2 > 0.0) {
                     telemetry.addData("lift1pos", pos1);
                     telemetry.addData("lift2pos", pos2);
                     telemetry.update();
@@ -137,7 +169,7 @@ public class AutonomousTest extends LinearOpMode {
                 double pos2 = pivot2.getCurrentPosition();
                 packet.put("pivot1pos", pos1);
                 packet.put("pivot2pos", pos2);
-                if (pos1 < 1200.0 && pos2 < 1200.0) {
+                if (pos1 < 1235.0 && pos2 < 1235.0) {
                     telemetry.addData("pivot1pos", pos1);
                     telemetry.addData("pivot2pos", pos2);
                     telemetry.update();
@@ -149,9 +181,69 @@ public class AutonomousTest extends LinearOpMode {
                 }
             }
         }
-
+/*penis*/
         public Action pivotUp() {
             return new PivotUp();
+        }
+        public class pivotdowntosample implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    pivot1.setPower(-1);
+                    pivot2.setPower(-1);
+                    initialized = true;
+                }
+
+                double pos1 = pivot1.getCurrentPosition();
+                double pos2 = pivot2.getCurrentPosition();
+                packet.put("pivot1pos", pos1);
+                packet.put("pivot2pos", pos2);
+                if (pos1 > 200.0 && pos2 > 200.0) {
+                    telemetry.addData("pivot1pos", pos1);
+                    telemetry.addData("pivot2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    pivot1.setPower(0);
+                    pivot2.setPower(0);
+                    return false;
+                }
+            }
+        }
+        public Action pivotdowntosample() {
+            return new pivotdowntosample();
+        }
+        public class Pivotdown implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    pivot1.setPower(-1);
+                    pivot2.setPower(-1);
+                    initialized = true;
+                }
+
+                double pos1 = pivot1.getCurrentPosition();
+                double pos2 = pivot2.getCurrentPosition();
+                packet.put("pivot1pos", pos1);
+                packet.put("pivot2pos", pos2);
+                if (pos1 > 0.0 && pos2 > 0.0) {
+                    telemetry.addData("pivot1pos", pos1);
+                    telemetry.addData("pivot2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    pivot1.setPower(0);
+                    pivot2.setPower(0);
+                    return false;
+                }
+            }
+        }
+        public Action pivotDown() {
+            return new Pivotdown();
         }
     }
 
@@ -164,37 +256,57 @@ public class AutonomousTest extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         Lift lift = new Lift(hardwareMap);
         Pivot pivot = new Pivot(hardwareMap);
+        Claw claw = new Claw(hardwareMap);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         //put initialization here
         //Actions.runBlocking(lift.liftDown());
         //init ends
 
-        //
-        Action liftAction1 = lift.liftUp();
+
+        Action specimenLift = lift.liftUp();
+        Action liftDown = lift.liftDown();
+
+        Action openClaw = claw.openClaw();
+        Action closeClaw1 = claw.closeClaw();
+
         Action specimenPivotUp = pivot.pivotUp();
-        Action trajectory = drive.actionBuilder(drive.pose)
-// then your movements
-// for example
+        Action specimenpivotdowntosample = pivot.pivotdowntosample();
+        Action pivotdown = pivot.pivotDown();
+
+        Action specimenForward = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(0,-40))
               //  .strafeToLinearHeading(new Vector2d(-48, -40), Math.toRadians(90))
                // .strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
-// and then at the end
                 .build();
 
+        Action specimenToSample1 = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(new Vector2d(-48, -40), Math.toRadians(90))
+                .build();
+        //put inits here
+Actions.runBlocking(closeClaw1);
+Actions.runBlocking(liftDown);
+Actions.runBlocking(pivotdown);
 // finally, after waitForStart, run it:
-        Actions.runBlocking(trajectory); //move forward to score specimen
+waitForStart();
+if (isStopRequested()) return;
+// autonomous starts
+        Actions.runBlocking(specimenForward); //move forward to score specimen
         Actions.runBlocking(specimenPivotUp); //specimen pivot
-        Actions.runBlocking(liftAction1); //specimen lift
-        Actions.runBlocking(); //pivot down to score specimen
-        Actions.runBlocking(); //open claw
-        Actions.runBlocking(); //pivot down to pick up sample
+        Actions.runBlocking(specimenLift); //specimen lift
+            new ParallelAction(
+                    liftDown, //slides to 0
+                    openClaw//open claw
+            );
+        Actions.runBlocking(specimenToSample1); //move to first claw area
+        Actions.runBlocking(specimenpivotdowntosample); //pivot down to pick up sample
         Actions.runBlocking(); //slides extend/close claw on sample
         Actions.runBlocking(new ParallelAction(
         //pivot and drive to bucket section
 
         ));
-        Actions.runBlocking(); //high bucket lift
+        Actions.runBlocking(); //slides up
         Actions.runBlocking(); //claw open
+
 
 
 
