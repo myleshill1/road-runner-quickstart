@@ -290,22 +290,37 @@ Actions.runBlocking(pivotdown);
 waitForStart();
 if (isStopRequested()) return;
 // autonomous starts
-        Actions.runBlocking(specimenForward); //move forward to score specimen
-        Actions.runBlocking(specimenPivotUp); //specimen pivot
-        Actions.runBlocking(specimenLift); //specimen lift
-            new ParallelAction(
-                    liftDown, //slides to 0
-                    openClaw//open claw
-            );
+Actions.runBlocking(
+        new SequentialAction(
+                specimenForward,
+                specimenPivotUp,
+                specimenLift,
+                liftDown,
+                openClaw
+        )
+);
+       // Actions.runBlocking(specimenForward); //move forward to score specimen
+        //Actions.runBlocking(specimenPivotUp); //specimen pivot
+        //Actions.runBlocking(specimenLift); //specimen lift
+         //   new ParallelAction(
+          //         liftDown, //slides to 0
+           //         openClaw//open claw
+           // );
+
+
         Actions.runBlocking(specimenToSample1); //move to first claw area
         Actions.runBlocking(specimenpivotdowntosample); //pivot down to pick up sample
+        /*
         Actions.runBlocking(); //slides extend/close claw on sample
-        Actions.runBlocking(new ParallelAction(
+
+            new ParallelAction(
         //pivot and drive to bucket section
 
-        ));
+        );
         Actions.runBlocking(); //slides up
         Actions.runBlocking(); //claw open
+
+         */
 
 
 
