@@ -23,7 +23,7 @@ public class MeepMeepTesting1 {
                          .strafeToLinearHeading(new Vector2d(-52, -50), Math.toRadians(225))
                          .strafeToLinearHeading(new Vector2d(-58.5, -40), Math.toRadians(90))
                          .strafeToLinearHeading(new Vector2d(-52, -50), Math.toRadians(225))
-                        .strafeToLinearHeading(new Vector2d(-58.5, -40), Math.toRadians(120))
+                        .strafeToLinearHeading(new Vector2d(-56, -26), Math.toRadians(180))
                         .strafeToLinearHeading(new Vector2d(-52, -50), Math.toRadians(225))
                         //.turnTo(Math.toRadians(120))
                         // .turnTo(Math.toRadians(45))
