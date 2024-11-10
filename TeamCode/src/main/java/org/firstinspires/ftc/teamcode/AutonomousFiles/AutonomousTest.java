@@ -50,7 +50,7 @@ public class AutonomousTest extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 claw.setPosition(1.0);
-                return true;
+                return false;
             }
         }
         public Action openClaw() {
@@ -107,6 +107,8 @@ public class AutonomousTest extends LinearOpMode {
         public Action liftUp() {
             return new LiftUp();
         }
+
+
         public class LiftDown implements Action {
             private boolean initialized = false;
 
@@ -140,6 +142,7 @@ public class AutonomousTest extends LinearOpMode {
         }
     }
 
+
     public class Pivot {
         private DcMotorEx pivot1;
         private DcMotorEx pivot2;
@@ -172,7 +175,7 @@ public class AutonomousTest extends LinearOpMode {
                 double pos2 = pivot2.getCurrentPosition();
                 packet.put("pivot1pos", pos1);
                 packet.put("pivot2pos", pos2);
-                if (pos1 <= 1235.0 && pos2 <= 1235.0) {
+                if (pos1 <= 1300.0 && pos2 <= 1300.0) {
                     telemetry.addData("pivot1pos", pos1);
                     telemetry.addData("pivot2pos", pos2);
                     telemetry.update();
@@ -203,7 +206,7 @@ public class AutonomousTest extends LinearOpMode {
                 double pos2 = pivot2.getCurrentPosition();
                 packet.put("pivot1pos", pos1);
                 packet.put("pivot2pos", pos2);
-                if (pos1 >= 200.0 && pos2 >= 200.0) {
+                if (pos1 >= 850.0 && pos2 >= 850.0) {
                     telemetry.addData("pivot1pos", pos1);
                     telemetry.addData("pivot2pos", pos2);
                     telemetry.update();
@@ -277,18 +280,39 @@ public class AutonomousTest extends LinearOpMode {
         Action specimenpivotdowntosample = pivot.pivotdowntosample();
         Action pivotdown = pivot.pivotDown();
 
-        Action specimenForward = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(0,-33))
+        Action fullpath = drive.actionBuilder(initialPose)
+                .waitSeconds(3)
+                .strafeTo(new Vector2d(0,-31))
+                .waitSeconds(5)
+
+                .setTangent(180)
+                .splineToLinearHeading(new Pose2d(-48, -40, Math.toRadians(90)), Math.toRadians(90))
+
+                .strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
+
+                .turn(Math.toRadians(73))
+                .turn(Math.toRadians(-73))
+
+                .turn(Math.toRadians(85.5))
+
+                .splineToLinearHeading(new Pose2d(-26, -10, Math.toRadians(0)), Math.toRadians(25))
+                .build();
+        Action specimenForward = drive.actionBuilder(initialPose)
+                .strafeTo(new Vector2d(0,-31))
               //  .strafeToLinearHeading(new Vector2d(-48, -40), Math.toRadians(90))
                // .strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
                 .build();
 
-        Action specimenToSample1 = drive.actionBuilder(drive.pose)
+        Action specimenToSample1 = drive.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(-48, -40), Math.toRadians(90))
                 .build();
-        Action specimenhalfForward = drive.actionBuilder(drive.pose)
+        Action specimenhalfForward = drive.actionBuilder(initialPose)
                 .strafeToLinearHeading(new Vector2d(0,-40.5), Math.toRadians(90))
                         .build();
+        Action moverightone = drive.actionBuilder(initialPose)
+                .strafeTo(new Vector2d(1,0))
+                .build();
+
         //put inits here
         //Actions.runBlocking(claw.closeClaw());
 // finally, after waitForStart, run it:
@@ -296,6 +320,28 @@ waitForStart();
 if (isStopRequested()) return;
 // autonomous starts
 Actions.runBlocking(
+        new ParallelAction(
+                fullpath,
+                new SequentialAction(
+                        closeClaw1,
+                        specimenPivotUp,
+                        specimenLift,
+                       //SpecimenForward,
+                        new SleepAction(5),
+                        new ParallelAction(
+                                liftDown,
+                                new SequentialAction(
+                                        new SleepAction(0.85),
+                                        openClaw
+                                        //closeClaw1
+                                )
+                        ),
+                        closeClaw1
+                        //moverightone
+                )
+        )
+);
+        /*
         new SequentialAction(
                 closeClaw1,
                 specimenPivotUp,
@@ -304,12 +350,15 @@ Actions.runBlocking(
                 new ParallelAction(
                         liftDown,
                         new SequentialAction(
-                                new SleepAction(0.5),
+                                new SleepAction(0.85),
                                 openClaw
+                                //closeClaw1
                         )
-                )
-        )
-);
+                ),
+                closeClaw1
+                //moverightone
+        )*/
+
       /*
 Actions.runBlocking(
         new SequentialAction(
@@ -327,12 +376,12 @@ Actions.runBlocking(
 
         ));
         */
-          /*
-Actions.runBlocking(specimenToSample1);
-Actions.runBlocking(specimenpivotdowntosample);
-Actions.runBlocking(closeClaw1);
 
-           */
+//Actions.runBlocking(specimenToSample1);
+//Actions.runBlocking(specimenpivotdowntosample);
+//Actions.runBlocking(closeClaw1);
+
+
 
        // Actions.runBlocking(specimenForward); //move forward to score specimen
         //Actions.runBlocking(specimenPivotUp); //specimen pivot
