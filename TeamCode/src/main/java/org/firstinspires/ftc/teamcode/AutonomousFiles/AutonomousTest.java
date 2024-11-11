@@ -114,8 +114,8 @@ public class AutonomousTest extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    lift1.setPower(0.5);
-                    lift2.setPower(0.5);
+                    lift1.setPower(0.75);
+                    lift2.setPower(0.75);
                     initialized = true;
                 }
 
@@ -146,8 +146,8 @@ public class AutonomousTest extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    lift1.setPower(0.5);
-                    lift2.setPower(0.5);
+                    lift1.setPower(0.75);
+                    lift2.setPower(0.75);
                     initialized = true;
                 }
 
@@ -418,8 +418,8 @@ public class AutonomousTest extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    pivot1.setPower(-0.5);
-                    pivot2.setPower(-0.5);
+                    pivot1.setPower(-0.75);
+                    pivot2.setPower(-0.75);
                     initialized = true;
                 }
 
@@ -650,7 +650,7 @@ public class AutonomousTest extends LinearOpMode {
 
                 //.setTangent(180)
                 //.splineToLinearHeading(new Pose2d(-48.5, -40, Math.toRadians(90)), Math.toRadians(90))
-                .waitSeconds(4.5)
+                .waitSeconds(4)
                 //.strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
                 .setTangent(180)
                 .splineToLinearHeading(new Pose2d(-57.5, -57.5, Math.toRadians(230)), Math.toRadians(230))
@@ -658,9 +658,8 @@ public class AutonomousTest extends LinearOpMode {
                 .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(-54,-54), Math.toRadians(230))
                 //sample one high basket
-                .waitSeconds(1)
                 .strafeToLinearHeading(new Vector2d(-56.5, -40), Math.toRadians(90))
-                .waitSeconds(4)
+                .waitSeconds(5)
                 .setTangent(0)
                 .splineToLinearHeading(new Pose2d(-57.5, -57.5, Math.toRadians(230)), Math.toRadians(180))
                 //.strafeToLinearHeading(new Vector2d(-57.5, -57.5), Math.toRadians(230))
@@ -726,13 +725,13 @@ Actions.runBlocking(
 
                                 )
                         ),
-                        new SleepAction(1.3),
+                        new SleepAction(2),
                         openClaw,
                         //sample 1 basket done
                         new SleepAction(0.7),
                         maxPivot2,
                         sampleLiftfromhigh,
-                        new SleepAction(2),
+                        new SleepAction(0.5),
                         specimenpivotdowntosample2,
                         new SleepAction(0.5),
                         closeClaw,
@@ -749,11 +748,10 @@ Actions.runBlocking(
                         new SleepAction(1),
                         openClaw,
                         //sample 2 basket done
-                        new SleepAction(3),
                         new ParallelAction(
-                                sampleLiftfromhigh2,
-                                new SleepAction(2),
-                                specimenpivotdowntosample3
+                                liftDown,
+                                new SleepAction(1),
+                                pivotdown
                         )
                 )
         )
