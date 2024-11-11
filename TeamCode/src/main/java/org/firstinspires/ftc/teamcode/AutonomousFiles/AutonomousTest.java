@@ -108,6 +108,135 @@ public class AutonomousTest extends LinearOpMode {
             return new LiftUp();
         }
 
+        public class Highbasketlift implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    lift1.setPower(0.5);
+                    lift2.setPower(0.5);
+                    initialized = true;
+                }
+
+                double pos1 = lift1.getCurrentPosition();
+                double pos2 = lift2.getCurrentPosition();
+                packet.put("lift1Pos", pos1);
+                packet.put("lift2Pos", pos2);
+                if (pos1 <= 3300.0 && pos2 <= 3300.0) {
+                    telemetry.addData("lift1pos", pos1);
+                    telemetry.addData("lift2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    lift1.setPower(0);
+                    lift2.setPower(0);
+                    return false;
+                }
+            }
+        }
+
+        public Action highbasketLift() {
+            return new Highbasketlift();
+        }
+
+        public class Highbasketlift2 implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    lift1.setPower(0.5);
+                    lift2.setPower(0.5);
+                    initialized = true;
+                }
+
+                double pos1 = lift1.getCurrentPosition();
+                double pos2 = lift2.getCurrentPosition();
+                packet.put("lift1Pos", pos1);
+                packet.put("lift2Pos", pos2);
+                if (pos1 <= 3300.0 && pos2 <= 3300.0) {
+                    telemetry.addData("lift1pos", pos1);
+                    telemetry.addData("lift2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    lift1.setPower(0);
+                    lift2.setPower(0);
+                    return false;
+                }
+            }
+        }
+
+        public Action highbasketLift2() {
+            return new Highbasketlift2();
+        }
+
+
+        public class LiftSample implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    lift1.setPower(0.5);
+                    lift2.setPower(0.5);
+                    initialized = true;
+                }
+
+                double pos1 = lift1.getCurrentPosition();
+                double pos2 = lift2.getCurrentPosition();
+                packet.put("lift1Pos", pos1);
+                packet.put("lift2Pos", pos2);
+                if (pos1 <= 900.0 && pos2 <= 900.0) {
+                    telemetry.addData("lift1pos", pos1);
+                    telemetry.addData("lift2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    lift1.setPower(0);
+                    lift2.setPower(0);
+                    return false;
+                }
+            }
+        }
+
+        public Action liftSample() {
+            return new LiftSample();
+        }
+
+        public class LiftSamplefromhigh implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    lift1.setPower(-0.5);
+                    lift2.setPower(-0.5);
+                    initialized = true;
+                }
+
+                double pos1 = lift1.getCurrentPosition();
+                double pos2 = lift2.getCurrentPosition();
+                packet.put("lift1Pos", pos1);
+                packet.put("lift2Pos", pos2);
+                if (pos1 >= 830.0 && pos2 >= 830.0) {
+                    telemetry.addData("lift1pos", pos1);
+                    telemetry.addData("lift2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    lift1.setPower(0);
+                    lift2.setPower(0);
+                    return false;
+                }
+            }
+        }
+
+        public Action liftSamplefromhigh() {
+            return new LiftSamplefromhigh();
+        }
+
 
         public class LiftDown implements Action {
             private boolean initialized = false;
@@ -166,8 +295,8 @@ public class AutonomousTest extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    pivot1.setPower(0.5);
-                    pivot2.setPower(0.5);
+                    pivot1.setPower(0.3);
+                    pivot2.setPower(0.3);
                     initialized = true;
                 }
 
@@ -175,7 +304,7 @@ public class AutonomousTest extends LinearOpMode {
                 double pos2 = pivot2.getCurrentPosition();
                 packet.put("pivot1pos", pos1);
                 packet.put("pivot2pos", pos2);
-                if (pos1 <= 1300.0 && pos2 <= 1300.0) {
+                if (pos1 <= 1285.0 && pos2 <= 1285.0) {
                     telemetry.addData("pivot1pos", pos1);
                     telemetry.addData("pivot2pos", pos2);
                     telemetry.update();
@@ -206,7 +335,7 @@ public class AutonomousTest extends LinearOpMode {
                 double pos2 = pivot2.getCurrentPosition();
                 packet.put("pivot1pos", pos1);
                 packet.put("pivot2pos", pos2);
-                if (pos1 >= 850.0 && pos2 >= 850.0) {
+                if (pos1 >= 100.0 && pos2 >= 100.0) {
                     telemetry.addData("pivot1pos", pos1);
                     telemetry.addData("pivot2pos", pos2);
                     telemetry.update();
@@ -220,6 +349,37 @@ public class AutonomousTest extends LinearOpMode {
         }
         public Action pivotdowntosample() {
             return new pivotdowntosample();
+        }
+
+        public class pivotdowntosample2 implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    pivot1.setPower(-0.5);
+                    pivot2.setPower(-0.5);
+                    initialized = true;
+                }
+
+                double pos1 = pivot1.getCurrentPosition();
+                double pos2 = pivot2.getCurrentPosition();
+                packet.put("pivot1pos", pos1);
+                packet.put("pivot2pos", pos2);
+                if (pos1 >= 100.0 && pos2 >= 100.0) {
+                    telemetry.addData("pivot1pos", pos1);
+                    telemetry.addData("pivot2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    pivot1.setPower(0);
+                    pivot2.setPower(0);
+                    return false;
+                }
+            }
+        }
+        public Action pivotdowntosample2() {
+            return new pivotdowntosample2();
         }
         public class Pivotdown implements Action {
             private boolean initialized = false;
@@ -251,6 +411,68 @@ public class AutonomousTest extends LinearOpMode {
         public Action pivotDown() {
             return new Pivotdown();
         }
+
+        public class Pivothighbasket implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    pivot1.setPower(0.3);
+                    pivot2.setPower(0.3);
+                    initialized = true;
+                }
+
+                double pos1 = pivot1.getCurrentPosition();
+                double pos2 = pivot2.getCurrentPosition();
+                packet.put("pivot1pos", pos1);
+                packet.put("pivot2pos", pos2);
+                if (pos1 <= 1400.0 && pos2 <= 1400.0) {
+                    telemetry.addData("pivot1pos", pos1);
+                    telemetry.addData("pivot2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    pivot1.setPower(0);
+                    pivot2.setPower(0);
+                    return false;
+                }
+            }
+        }
+        public Action pivothighbasket() {
+            return new Pivothighbasket();
+        }
+
+        public class Pivothighbasket2 implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    pivot1.setPower(0.3);
+                    pivot2.setPower(0.3);
+                    initialized = true;
+                }
+
+                double pos1 = pivot1.getCurrentPosition();
+                double pos2 = pivot2.getCurrentPosition();
+                packet.put("pivot1pos", pos1);
+                packet.put("pivot2pos", pos2);
+                if (pos1 <= 1400.0 && pos2 <= 1400.0) {
+                    telemetry.addData("pivot1pos", pos1);
+                    telemetry.addData("pivot2pos", pos2);
+                    telemetry.update();
+                    return true;
+                } else {
+                    pivot1.setPower(0);
+                    pivot2.setPower(0);
+                    return false;
+                }
+            }
+        }
+        public Action pivothighbasket2() {
+            return new Pivothighbasket2();
+        }
     }
 
 
@@ -272,30 +494,44 @@ public class AutonomousTest extends LinearOpMode {
 
         Action specimenLift = lift.liftUp();
         Action liftDown = lift.liftDown();
+        Action sampleLiftfrom0 = lift.liftSample();
+        Action sampleLiftfromhigh = lift.liftSamplefromhigh();
+        Action highbasketSlides = lift.highbasketLift();
+            Action highbasketSlides2 = lift.highbasketLift2();
 
         Action openClaw = claw.openClaw();
-        Action closeClaw1 = claw.closeClaw();
+        Action closeClaw = claw.closeClaw();
 
         Action specimenPivotUp = pivot.pivotUp();
-        Action specimenpivotdowntosample = pivot.pivotdowntosample();
+        Action specimenpivotdowntosample1 = pivot.pivotdowntosample();
+            Action specimenpivotdowntosample2 = pivot.pivotdowntosample2();
+
         Action pivotdown = pivot.pivotDown();
+        Action highbasketPivotUp = pivot.pivothighbasket();
+            Action highbasketPivotUp2 = pivot.pivothighbasket2();
 
         Action fullpath = drive.actionBuilder(initialPose)
                 .waitSeconds(3)
                 .strafeTo(new Vector2d(0,-31))
-                .waitSeconds(5)
+                .waitSeconds(1.5)
 
                 .setTangent(180)
-                .splineToLinearHeading(new Pose2d(-48, -40, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-48.5, -40, Math.toRadians(90)), Math.toRadians(90))
+                .waitSeconds(2.5)
+                //.strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
+                .setTangent(180)
+                .splineToLinearHeading(new Pose2d(-57.5, -57.5, Math.toRadians(230)), Math.toRadians(230))
+                //.strafeToLinearHeading(new Vector2d(-57.5, -57.5), Math.toRadians(230))
+                .waitSeconds(1)
+                .strafeToLinearHeading(new Vector2d(-58.5, -40), Math.toRadians(90))
+                .waitSeconds(2)
+                .setTangent(0)
+                .splineToLinearHeading(new Pose2d(-57.5, -57.5, Math.toRadians(230)), Math.toRadians(180))
+                //.strafeToLinearHeading(new Vector2d(-57.5, -57.5), Math.toRadians(230))
+                .strafeToLinearHeading(new Vector2d(-56, -26), Math.toRadians(180))
+                .strafeToLinearHeading(new Vector2d(-57.5, -57.5), Math.toRadians(230))
 
-                .strafeToLinearHeading(new Vector2d(-48, -46), Math.toRadians(45))
-
-                .turn(Math.toRadians(73))
-                .turn(Math.toRadians(-73))
-
-                .turn(Math.toRadians(85.5))
-
-                .splineToLinearHeading(new Pose2d(-26, -10, Math.toRadians(0)), Math.toRadians(25))
+                .splineToLinearHeading(new Pose2d(-26, -10, Math.toRadians(0)), Math.toRadians(-25))
                 .build();
         Action specimenForward = drive.actionBuilder(initialPose)
                 .strafeTo(new Vector2d(0,-31))
@@ -323,90 +559,50 @@ Actions.runBlocking(
         new ParallelAction(
                 fullpath,
                 new SequentialAction(
-                        closeClaw1,
+                        closeClaw,
                         specimenPivotUp,
                         specimenLift,
-                       //SpecimenForward,
-                        new SleepAction(5),
+                        new SleepAction(2),
                         new ParallelAction(
                                 liftDown,
                                 new SequentialAction(
-                                        new SleepAction(0.85),
+                                        new SleepAction(0.825),
                                         openClaw
-                                        //closeClaw1
                                 )
                         ),
-                        closeClaw1
-                        //moverightone
+                        specimenpivotdowntosample1,
+                        sampleLiftfrom0,
+                        new SleepAction(0.5),
+                        closeClaw,
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                                highbasketPivotUp,
+                                highbasketSlides
+                        ),
+                        new SleepAction(1.5),
+                        openClaw,
+                        new SleepAction(1),
+                        new ParallelAction(
+                                new SleepAction(1),
+                                sampleLiftfromhigh,
+                                specimenpivotdowntosample2
+                        ),
+                        closeClaw,
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                                highbasketPivotUp2,
+                                highbasketSlides2
+                        ),
+                        new SleepAction(1.5),
+                        openClaw
+
+
+
+
+
                 )
         )
 );
-        /*
-        new SequentialAction(
-                closeClaw1,
-                specimenPivotUp,
-                specimenLift,
-                specimenForward,
-                new ParallelAction(
-                        liftDown,
-                        new SequentialAction(
-                                new SleepAction(0.85),
-                                openClaw
-                                //closeClaw1
-                        )
-                ),
-                closeClaw1
-                //moverightone
-        )*/
-
-      /*
-Actions.runBlocking(
-        new SequentialAction(
-                closeClaw1,
-                specimenPivotUp,
-                specimenLift,
-                specimenForward,
-                new ParallelAction(
-                        liftDown,
-                        new SequentialAction(
-                                new SleepAction(0.5),
-                                openClaw
-                        )
-                )
-
-        ));
-        */
-
-//Actions.runBlocking(specimenToSample1);
-//Actions.runBlocking(specimenpivotdowntosample);
-//Actions.runBlocking(closeClaw1);
-
-
-
-       // Actions.runBlocking(specimenForward); //move forward to score specimen
-        //Actions.runBlocking(specimenPivotUp); //specimen pivot
-        //Actions.runBlocking(specimenLift); //specimen lift
-         //   new ParallelAction(
-          //         liftDown, //slides to 0
-           //         openClaw//open claw
-           // );
-
-
-   //     Actions.runBlocking(specimenToSample1); //move to first claw area
-  //      Actions.runBlocking(specimenpivotdowntosample); //pivot down to pick up sample
-        /*
-        Actions.runBlocking(); //slides extend/close claw on sample
-
-            new ParallelAction(
-        //pivot and drive to bucket section
-
-        );
-        Actions.runBlocking(); //slides up
-        Actions.runBlocking(); //claw open
-
-         */
-
-
 
 
 
