@@ -24,7 +24,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 @Config
-@Autonomous(name = "autotest1", group = "Autonomous")
+@Autonomous(name = "autobucketside", group = "Autonomous")
 public class AutonomousTest extends LinearOpMode {
 
     public class Claw {
@@ -779,7 +779,7 @@ public class AutonomousTest extends LinearOpMode {
                                         )
 
                                 ),
-                                new SleepAction(1.5),
+                                new SleepAction(1.90),
                                 openClaw,
                                 //sample 2 basket done
                                 new SleepAction(0.5),
